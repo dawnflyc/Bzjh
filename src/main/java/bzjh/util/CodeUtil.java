@@ -14,7 +14,11 @@ import java.lang.reflect.Field;
 
 
 public class CodeUtil {
-
+    /**
+     * xml转换为Document
+     * @param xml
+     * @return
+     */
     public static Document xmlToDocument(String xml) {
         Document document = null;
         try {
@@ -25,6 +29,11 @@ public class CodeUtil {
         return document;
     }
 
+    /**
+     * 信息报转换为xml
+     * @param message
+     * @return
+     */
     public static String messagetoXml(WechatMessage message) {
         if (message != null) {
             Class clazz = message.getClass();
@@ -50,6 +59,11 @@ public class CodeUtil {
         return null;
     }
 
+    /**
+     * 递归反射获取类中的所以私有方法
+     * @param clazz
+     * @return
+     */
     private static Field[] getPrivateField(Class clazz) {
         Field[] supers = new Field[0];
         if (clazz.getSuperclass() != null) {
@@ -62,6 +76,14 @@ public class CodeUtil {
         return fields1;
     }
 
+    /**
+     * xml转换为信息报
+     * @param clazz 信息报类型
+     * @param xml xml
+     * @param <T> 信息报反射类型
+     * @return
+     * @throws Exception
+     */
     public static <T extends WechatMessage> T xmlToMessage(Class<T> clazz, String xml) throws Exception {
         if (clazz.isAnnotationPresent(XmlRootElement.class)) {
             Document document = DocumentHelper.parseText(xml.replaceAll("\r|\n",""));
@@ -99,6 +121,12 @@ public class CodeUtil {
         return stringBuilder.toString();
     }
 
+    /**
+     * 反射转换类型
+     * @param value
+     * @param fieldTypeClass
+     * @return
+     */
     public static Object convertValType(Object value, Class fieldTypeClass) {
         Object retVal = null;
         if (Long.class.getName().equals(fieldTypeClass.getName())
